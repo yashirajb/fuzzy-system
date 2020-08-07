@@ -1,0 +1,27 @@
+{
+  "name": "mernApp",
+  "version": "1.0.0",
+  "description": "###",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashirajb/fuzzy-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yashirajb/fuzzy-system/issues"
+  },
+  "homepage": "https://github.com/yashirajb/fuzzy-system#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.27",
+    "morgan": "^1.10.0"
+  }
+}
