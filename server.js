@@ -8,6 +8,9 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+
+const routes = require('./routes/api')
+
 //Connect to mongoose
 //Takes two params, the first is for the length of the connection, either local or remote
 //the second param takes in options that you can pass to MongoDB
@@ -22,74 +25,8 @@ mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 });
 
-
-//Schema (dummy data)
-
-const Schema = mongoose.Schema;
-const BlogPostSchema = new Schema({
-     title: String,
-     body: String,
-     date: {
-         type: String,
-         default: Date.now()
-     }
-});
-
-//Model
-
-const BlogPost = mongoose.model('BlogPost', BlogPostSchema);
-
-//Saving data to mongo database
-
-const data = {
-    title: 'Welcome to my blog',
-    body: 'Come learn all about my life'
-};
-
-//New instance of the model above
-const newBlogPost = new BlogPost(data);
-
-//.save
-
-// newBlogPost.save((error) => {
-//     if(error){
-//         console.log('Oops,something went wrong');
-//     }else{
-//         console.log('Data has been saved!');
-//     }
-// });
-
-
-
-
-//Http request logger
-app.use(morgan('tiny'));
-
-//Routes
-app.get('/api', (req, res) => {
-    // const data = {
-    //     username: 'beth',
-    //     age: 17
-    // };
-
-    BlogPost.find({})
-        .then((data) => {
-            console.log('Data:', data)
-            res.json(data);
-        })
-        .catch((error) =>{
-            console.log('error:', error)
-        });
-
-
-}); 
-
-app.get('/api/name', (req, res) => {
-    const data = {
-        username: 'seth',
-        age: 71
-    }
-    res.json(data);
-}); 
+//HTTP request logger
+app.use(morgan('tiny')); 
+app.use('/api', routes);
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));

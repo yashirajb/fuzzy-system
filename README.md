@@ -62,11 +62,38 @@
 
 14. To see the data, I installed Robo 3T which is a desktop graphical user interface (GUI) that allows for more visual interaction with the data. 
 
-## Refactoring the server.js code
+## Refactoring server.js code
 
 1. Saved unrefactored server.js code to a text file for future reference
 
-2. Created a models folder and moved Schema code from server.js file inside
+2. Created a models folder and then created blogPost.js file. 
 
-3. 
+3. Moved schema and model code from server.js file inside blogPost.js file. 
+
+4. Required mongoose inside blogPost.js file and module.exported the BlogPost model so it can be used wherever it's needed.
+
+5. Created a routes folder and routes.js file inside folder where api's will be created. 
+
+6. Required express and set up use of express routers
+
+7. Once router was set up, I module.exported the router for use wherever it's needed. 
+
+8. Moved all the routes from the server.js file into the api.js file 
+
+9. Changed every instance of app.get to router.get
+
+10. Required the BlogPost model from blogPost.js into the api.js file to enable the use of the model (BlogPost.find) in the get route.
+
+11. Brought the routes from api.js into the server.js file 
+
+12. Inside the same server.js file, took the newly added route and configured it, placing it right below app.use(morgan)
+
+13. Deleted all dummy data contained in the server.js file 
+
+14. To test that everything works, ran server 
+and server is successfully getting back data from api routes
+
+15. In api.js file, I took a look at the /api routes and deleted the api starting point, leaving / in place. I then moved into the server.js file and placed api behind the backslash in app.use-->app.use('/api, routes);
+
+## REACT
 
