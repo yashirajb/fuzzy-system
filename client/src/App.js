@@ -9,8 +9,25 @@ class App extends Component {
 
     state = {
       title: '',
-      body: ''
+      body: '',
+      posts: []
     };
+
+componentDidMount = () => {
+  this.getBlogPost();
+};
+
+    getBlogPost = () => {
+      axios.get('/api')
+      .then((response) => {
+        const data = response.data;
+        this.setState({ posts: data});
+        console.log('Data has been received!')
+      })
+      .catch(() => {
+        alert('Unable to get data');
+      });
+    }
 
     handleChange = ({ target }) => {
       const { name, value } = target; 
@@ -35,6 +52,7 @@ axios({
     .then(() => {
       console.log('Data has been sent')
       this.resetUserInputs();
+      this.getBlogPost();
     })
     .catch(() => {
       console.log("Oops, there's an error")
@@ -48,6 +66,17 @@ resetUserInputs = () => {
     body: ''
   })
 };
+
+displayBlogPost = (posts) => {
+  if (!posts.length) return null;
+
+  return posts.map((post, index) => (
+    <div key={index}>
+      <h3>{post.title}</h3>
+      <p>{post.body}</p>
+    </div>
+  ));
+};
     
 render(){
 
@@ -57,7 +86,7 @@ render(){
 
   return(
 
-      <div> 
+      <div className="app"> 
         <h2>Welcome to my App</h2>
         <form onSubmit={this.submit}>
           <div className="form-input">
@@ -68,11 +97,13 @@ render(){
           </div>
           <button>Submit</button>
         </form>
+        <div className="blog">
+        {this.displayBlogPost(this.state.posts)}
       </div>
-
+   </div>
        );
 
-    };
+    }
 
 };
 

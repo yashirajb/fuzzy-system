@@ -199,3 +199,23 @@ newBlogPost.save((error) => {
 3. Inside App.js added a resetUserInputs function and set state to empty for title and empty for body. Now, when resetUserInputs is called, it will reset the user. Now, the function can be called aften the .then callback telling us data has been sent to the server. 
 Now in the browser console under "Data has been sent" I see "State:  {title: "", body: ""} ". State and body have been successfully emptied after submit is clicked. 
 
+# Fetching data from MongoDB to display on the page
+
+1. Went into the browser at localhost:8080/api and saw port 8080 is still workind and all data is still being displayed on the page. To get the displayed data to the client, I went back into the app.js file and created a getBlogPost function (inserted below state and above handleChange) to get the data from the server. Used axios.get and used promises in case the data didn't fetch. In a real world application this isn't the most proper way to error handle, but for now this will do. Also passed in response and created data variable to hold response.data. 
+
+2. In same file I added posts to state, setting posts to an empty array. 
+
+3. Went into getBlogPost function and added this.setState with the data from the posts. So now, every time I want to get all the posts, I just call the getBlogPost function and the posts are fetched. 
+
+4. I created a componentDidMount function to solve WHEN I would call the getBlogPost function, and that's after the component mounts. So now, the componentDidMount function calls the getBlogPost function. 
+
+5. When I refreshed the browser, I could see all of the posts (16 at the time) listed under the posts click down tab in the browser console: 
+App.js:71 State:  {title: "", body: "", posts: Array(16)}
+App.js:25 Data has been recieved!
+
+6. Still in the App.js file, I went inside the render function, and after the form element I added a div and created a function within that div that would render all the posts. Before doing that inside the div, I went just above the render function and created a displayBlogPosts function that would contain all the posts if there were any to return, and posts.length would check to see if there are any posts, and if it's empty it would retun null and stop the function. If it's not empty the function would proceed with looping through each post, and a div that would contain the title and the details of the post. Also added a div key which must be added when looping over an element, and added post.title to h3 and post.body to p tags as well. 
+
+7. From there, I went back into the render function and called the just-created diplayBlogPosts function and passed it the list of the posts that I was getting back from state, or (this.state.posts). 
+
+8. I ensured that any saved posts would show in the browser without the browser needing to be refreshed by going back to my resetUserInputs call and placing a this.getBlogPost call right underneath. After the form is submitted and everything goes well, the getBlogPost call will execute and get the latest post from the database. 
+
