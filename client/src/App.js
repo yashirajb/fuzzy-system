@@ -1,6 +1,8 @@
 // import React from 'react';
 import React, {Component} from 'react';
 import axios from 'axios';
+import './App.css';
+
 
 
 
@@ -71,7 +73,7 @@ displayBlogPost = (posts) => {
   if (!posts.length) return null;
 
   return posts.map((post, index) => (
-    <div key={index}>
+    <div key={index} className="blog-post_display">
       <h3>{post.title}</h3>
       <p>{post.body}</p>
     </div>
