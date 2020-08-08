@@ -162,3 +162,39 @@ handleChange = (event) => {
       const { name, value } = target; 
        this.setState({[name]: value });
     };
+
+    So now I'm going to get the event from the target, getting the name and the value that are coming in. 
+
+2. Went into api.js file and inside the callback and changed this: 
+
+newBlogPost.save((error) => {
+        if(error){
+            res.status(500).json({
+                msg: 'Sorry, internal server error'
+            });
+        }else {
+            // res.json(data);
+            res.json({
+                msg: 'Data has been saved!'
+            });
+        }
+});
+
+to this: 
+
+newBlogPost.save((error) => {
+        if(error){
+            res.status(500).json({msg: 'Sorry internal server error'
+            });
+            return;
+        } res.json(data);
+            res.json({
+                msg: 'Data has been saved!'
+            });
+        }
+});
+  
+    I added return to the status 500 callback so the lines will stop executing and removed the else statement. Also added return to res.json data saved message. This is to eliminate the previous if else statement. 
+
+3. Inside App.js added a resetUserInputs function and set state to empty for title and empty for body. Now, when resetUserInputs is called, it will reset the user. Now, the function can be called aften the .then callback telling us data has been sent to the server. 
+Now in the browser console under "Data has been sent" I see "State:  {title: "", body: ""} ". State and body have been successfully emptied after submit is clicked. 

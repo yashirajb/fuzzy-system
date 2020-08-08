@@ -34,11 +34,19 @@ axios({
   })
     .then(() => {
       console.log('Data has been sent')
+      this.resetUserInputs();
     })
     .catch(() => {
       console.log("Oops, there's an error")
     });
 
+};
+
+resetUserInputs = () => {
+  this.setState({
+    title: '',
+    body: ''
+  })
 };
     
 render(){

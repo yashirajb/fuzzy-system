@@ -40,16 +40,13 @@ newBlogPost.save((error) => {
             res.status(500).json({
                 msg: 'Sorry, internal server error'
             });
-        }else {
-            // res.json(data);
+        return;
+        } // res.json(data);
             res.json({
                 msg: 'Data has been saved!'
             });
-        }
-});
-  
-
-   
+        });
+ 
 }); 
 
 
