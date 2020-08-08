@@ -42,7 +42,7 @@ newBlogPost.save((error) => {
             });
         return;
         } // res.json(data);
-            res.json({
+            return res.json({
                 msg: 'Data has been saved!'
             });
         });

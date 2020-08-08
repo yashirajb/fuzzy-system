@@ -198,3 +198,4 @@ newBlogPost.save((error) => {
 
 3. Inside App.js added a resetUserInputs function and set state to empty for title and empty for body. Now, when resetUserInputs is called, it will reset the user. Now, the function can be called aften the .then callback telling us data has been sent to the server. 
 Now in the browser console under "Data has been sent" I see "State:  {title: "", body: ""} ". State and body have been successfully emptied after submit is clicked. 
+
