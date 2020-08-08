@@ -25,6 +25,11 @@ mongoose.connection.on('connected', () => {
     console.log('Mongoose is connected!');
 });
 
+//Data parsing middleware being used in express to 1. parse json 2. parse url, set to false which considers how deeply to go into the object. 
+//False recognizes that the object is not that deep, you may want to use true if you have a very deep object. 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false}))
+
 //HTTP request logger
 app.use(morgan('tiny')); 
 app.use('/api', routes);

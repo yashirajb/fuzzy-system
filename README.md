@@ -2,6 +2,7 @@
 
 ### Terminal: 
 
+
 1. Used command npx-create-react-app client to create React front-end
 
 2. CDed into client folder and ran command npm start to check react install was successful 
@@ -9,6 +10,7 @@
 3. Ran npm init at root to install mongoose, express, axios, and morgan
 
 ### Server.js:
+
 
 4. Opened server file to require express, mongoose, and morgan. Also required path (a built-in node module that comes with node.js, so no install necessary)
 
@@ -28,6 +30,7 @@
 
 ## Mongoose and MongoDB 
 ### Mongoose is an object data model for MongoDB
+
 
 1. Checked to see if MongoDB is installed by running the command 'which mongo'. 
 
@@ -64,6 +67,7 @@
 
 ## Refactoring server.js code
 
+
 1. Saved unrefactored server.js code to a text file for future reference
 
 2. Created a models folder and then created blogPost.js file. 
@@ -95,5 +99,66 @@ and server is successfully getting back data from api routes
 
 15. In api.js file, I took a look at the /api routes and deleted the api starting point, leaving / in place. I then moved into the server.js file and placed api behind the backslash in app.use-->app.use('/api, routes);
 
+s
 ## REACT
 
+1. Deleted everything inside app.js file
+
+2. Imported react into app.js file, defined class App, created render function, set up JSX return, and exported the component.
+
+3. Continuing in App.js, I began building a form, created classNames, created first div with an input and input values, a second div with a textarea and textarea values, and a submit button. 
+
+4. Next I focused on taking the user input and sending the value of the input to the server. I set state to contain the value of the input (title and body). I then added these values (this.state.title and this.state.body) to the value fields in the input and textarea divs respectively. 
+
+5. Added a function to all of the inputs so as the user is typing the state is updated. This required the creation of a handleChange function which is the function responsible for updating state. I then passed this handleChange function into the onChange functions in input and textarea.
+
+6. Passed in event param to the handleChange function since the event has access to the entire event that is coming in from the DOM. 
+
+7. Added event.target which gets the value of the current element that is firing the event, which would be the input form. 
+
+8. Retrieved from the input target by creating a variable for name and for value. Then I updated state with these values(see this.setState).
+
+9. Console.logged the state with 'State': and this.state, and checked that state updates in the browser. 
+
+10. Went back into App.js and attached an event to the form by creating a submit function which will take all the data it needs and send it to the server. 
+
+11. Attached onSubmit to the form, added e.preventDefault to stop the browser from refreshing. Created a payload which contains the data I want to send to the server--contains title and body that is coming from the state. 
+
+12. Imported axios and placed it in the App.js file to make the http call. Placed the url, post request(get), and set the data, which is payload. To know if the data has been successfully sent, I added promises as well. 
+
+13. To find out where the data is being sent, I looked back in the api.js file and created a post route. Instead of sending data on this route, I sent the message "We recieved your data" to let the client know their data has been successfully recieved. 
+
+14. Went back into App.js and defined the port where the server is waiting, which is port 8080 in the url portion of axios(), and because I wanted to hit the post route, I put /api/save after localhost:8080. 
+
+15. Went into the browser to check the connection and recieved an "Oops, there's an error" message. That's because there are two different servers (port 3000 and port 8080) that are running and they aren't in the same domain, so they can't access resources or data within the same origin. If they arent in the same domain, they can't access data within the same origin, and that's when the CORS error pops up. 
+
+16. To solve this I went into the client folder and then inside the package.json file. Inside this file I added a proxy of localhost:8080. Adding this proxy meant I no longer needed the reference to the full url in the App.js file (under axios). Now all the requests made will go on port 3000, and I modified the url in App.js to reflect this. 
+
+17. Resolved CORS policy, recieved a ReferenceError concerning undefined data variable so defined data as req.body in api.js file to fix ReferenceError (see commented out notes in api.js or here: //without defining data you will get an error--->ReferenceError: data is not defined
+at router.post (/Users/Yashira/Desktop/accime/mernApp/routes/api.
+const data = req.body; ), but still needed to resolve why console logged Body: undefined when I made a post request (input information into the title and body of my app). In order for the body of the request to not come back as undefined, I needed to add app.use to my server.js file as middleware for both json and urlencoded. Once I added both middleware pieces to my server.js file, the console no longer showed the body of my request as being undefined, but instead showed Body:  { title: 'khashfjks', body: 'sjdhfkshfa' }. All the data coming in as json or urlencoded is now being made available and the data is able to be consumed.  
+
+18. Now I needed to take the data coming in from req.body and save it into the database by using the model I created earlier in the app's development (const BlogPost = mongoose.model('BlogPost', BlogPostSchema);). I placed this model into the portion of my api.js code that indicates I want to save to the database (the router.post section). I created a newBlogPost variable and set it to a new instance of the BlogPost model, and I passed this new instance the data (const newBlogPost = new Blogpost(data)). Finally, I added .save to the newly created newBlogPost variable. I then created a callback within newBlogPost.save() that either let the user know there was an error or told the user their data had been saved, moving the res.json(data), which I changed to res.json({msg: 'Data has been saved!'}), into the callback if their data had been saved successfully. 
+
+19. Refreshed browser to check that newly added code is working. Console showed input data was saved successfully with status code 200 message. Checked Robo 3T to see if data saved there and the data saved there as well. At this point everything is working end to end. 
+
+
+## Refactoring code
+
+1. Went into App.js file and inside the handleChange and changed this: 
+handleChange = (event) => {
+      const target = event.target;
+      const name = target.name;
+      const value = target.value;
+
+      this.setState({
+        [name]: value
+      });
+    };
+
+    to this: 
+    
+   handleChange = ({ target }) => {
+      const { name, value } = target; 
+       this.setState({[name]: value });
+    };
