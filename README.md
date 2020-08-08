@@ -247,3 +247,11 @@ A note about the script names: The names of scripts "build" and "heroku-postbuil
 10. Went inside the client folder and checked that it didn't contain a git folder. If I did see a folder was there, I would run the command rm -rf .git to remove the folder. 
 
 11. Went to the root of the app and created a gitignore file. Added node_modules to the file so git won't track it. 
+
+12. In console typed heroku create mernappyashira
+
+13. My application did not yet have an addon, so I needed to make sure my app has an add-on connected to MongoDB to enable use of MongoDB through Heroku. 
+
+14. To do this, ran command heroku addons:create mongolab:sandbox in terminal. To check that addon was created successfully I ran heroku addons --all in the terminal and ⬢ mernappyashira was listed as having an addon. 
+
+15. Added everything to git and ran Heroku locally first before pushing it to Heroku officially by typing heroku local in the command line 
