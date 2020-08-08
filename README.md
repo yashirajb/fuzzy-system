@@ -99,7 +99,6 @@ and server is successfully getting back data from api routes
 
 15. In api.js file, I took a look at the /api routes and deleted the api starting point, leaving / in place. I then moved into the server.js file and placed api behind the backslash in app.use-->app.use('/api, routes);
 
-s
 ## REACT
 
 1. Deleted everything inside app.js file
@@ -194,12 +193,12 @@ newBlogPost.save((error) => {
         }
 });
   
-    I added return to the status 500 callback so the lines will stop executing and removed the else statement. Also added return to res.json data saved message. This is to eliminate the previous if else statement. 
+I added return to the status 500 callback so the lines will stop executing and removed the else statement. Also added return to res.json data saved message. This is to eliminate the previous if else statement. 
 
 3. Inside App.js added a resetUserInputs function and set state to empty for title and empty for body. Now, when resetUserInputs is called, it will reset the user. Now, the function can be called aften the .then callback telling us data has been sent to the server. 
 Now in the browser console under "Data has been sent" I see "State:  {title: "", body: ""} ". State and body have been successfully emptied after submit is clicked. 
 
-# Fetching data from MongoDB to display on the page
+## Fetching data from MongoDB to display on the page
 
 1. Went into the browser at localhost:8080/api and saw port 8080 is still workind and all data is still being displayed on the page. To get the displayed data to the client, I went back into the app.js file and created a getBlogPost function (inserted below state and above handleChange) to get the data from the server. Used axios.get and used promises in case the data didn't fetch. In a real world application this isn't the most proper way to error handle, but for now this will do. Also passed in response and created data variable to hold response.data. 
 
@@ -220,7 +219,31 @@ App.js:25 Data has been recieved!
 8. I ensured that any saved posts would show in the browser without the browser needing to be refreshed by going back to my resetUserInputs call and placing a this.getBlogPost call right underneath. After the form is submitted and everything goes well, the getBlogPost call will execute and get the latest post from the database. 
 
 
-# Pushing to Heroku
+## Pushing to Heroku
 
+1. Checked to make sure I had the Heroku CLI installed by typing heroku --version in the command line. 
 
+2. Logged into Heroku via the command line by typing heroku login 
 
+3. After logging in, I went back inside the server.js file to check I was using the proper port. Port should be: const PORT = process.env.PORT || 8080. If port 8080 is not available Heroku can choose a different port that's available to run the application.
+
+4. Checked my database connection and put an "add-on" on my mongoose.connect by adding process.env.MONGODB_URI || . to try and use Heroku first, and if not I can use my localhost ('mongodb://localhost/yashira') for development. 
+
+5. Created a custom variable and set the node.env value to production. This is how we will know that our application is on Heroku. I'll be setting a custom variable related to this step a bit later. 
+
+6. Placed the client into the server by first going into (cd-ing) the client folder on the command line and typing npm run build. 
+
+7. To place the build folder inside the server, I added app.use(express.static('client/build')) inside the if statement set to production I created to confirm the app is on Heroku. 
+
+8. I went inside the package.json (the package at the root, not the package in the client folder) and wrote the following scripts, placing them above the "start" script:  
+"build": "cd client && npm run build",
+"install-client": "cd client && npm install",
+"heroku-postbuild": "npm run install-client && npm run build"
+
+A note about the script names: The names of scripts "build" and "heroku-postbuild" must be used. The name "install-client" is one that can be altered to whatever name desired, it's not standard. All commands the script names point to, however, must be used to ensure deployment is successful. 
+
+9. Ensured that "start" command was present in the package.json file and that it was pointing to "node server.js" so Heroku can run the application. 
+
+10. Went inside the client folder and checked that it didn't contain a git folder. If I did see a folder was there, I would run the command rm -rf .git to remove the folder. 
+
+11. Went to the root of the app and created a gitignore file. Added node_modules to the file so git won't track it. 

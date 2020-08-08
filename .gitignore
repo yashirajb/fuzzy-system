@@ -1,0 +1,2 @@
+# I don't want git to track my node modules 
+node_modules
